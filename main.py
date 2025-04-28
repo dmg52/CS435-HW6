@@ -3,7 +3,12 @@
 def frequency_table(st):
     table = {}
     for i in st:
-        table[i] += 1
+        if i not in table:
+            table[i] = 1
+        else:
+            table[i] += 1
+    for i in table.items():
+        print(i[0] + ": " + str(i[1]))
     return
 # Output:
 # Character Frequencies:
