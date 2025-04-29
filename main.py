@@ -1,3 +1,19 @@
+# MinHeap constructor function, takes a dictionary of letters and their frequencies
+def into_minheap(dict):
+    heap = []
+    for i in dict.items():
+        heap.append(i)
+        # index of new element
+        i = len(heap) - 1
+        while i > 0 and heap[(i - 1) // 2][1] > heap[i][1]:
+            heap[i], heap[(i - 1) // 2] = heap[(i - 1) // 2], heap[i]
+            i = (i - 1) // 2
+    return heap
+
+# Pops top element from a minheap
+def pop_minheap(heap):
+    return
+
 # a) frequency_table(st)
 # Input:
 def frequency_table(st):
@@ -9,7 +25,7 @@ def frequency_table(st):
             table[i] += 1
     for i in table.items():
         print(i[0] + ": " + str(i[1]))
-    return
+    return table
 # Output:
 # Character Frequencies:
 # 'a': 1
@@ -58,4 +74,6 @@ def Huffman_decode(bst, tree):
 st = "abbcccdddd"
 #bst = "0000010010010101011111"
 
-frequency_table(st)
+x = into_minheap(frequency_table(st))
+for i in x:
+    print(i)
