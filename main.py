@@ -1,3 +1,4 @@
+'''Matthew'''
 # MinHeap constructor function, takes a dictionary of letters and their frequencies
 def into_minheap(dict):
     heap = []
@@ -10,10 +11,12 @@ def into_minheap(dict):
             i = (i - 1) // 2
     return heap
 
+'''Matthew'''
 # Pops top element from a minheap
 def pop_minheap(heap):
     return
 
+'''Matthew'''
 # a) frequency_table(st)
 # Input:
 def frequency_table(st):
