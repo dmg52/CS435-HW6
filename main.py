@@ -54,17 +54,36 @@ def Huffman_encode(st, codes):
 # Encoded String:
 # 0000010010010101011111
 
+'''Yonghyeon'''
 # d) Huffman_tree(L)
 # Input:
 def Huffman_tree(L):
-    return
+    root = {}
+    for char, code in L:
+        node = root
+        for bit in code:
+            if bit not in node:
+                node[bit] = {}
+            node = node[bit]
+        node['char'] = char 
+    return root
+
 # Output:
 # (Huffman tree structure is constructed and stored in variable `tree`)
 
+'''Yonghyeon'''
 # e) Huffman_decode(bst, tree)
 # Input:
 def Huffman_decode(bst, tree):
-    return
+    result = ''
+    node = tree
+    for bit in bst:
+        node = node[bit]
+        if 'char' in node:
+            result += node['char']
+            node = tree  # 다시 루트로 리셋
+    print("Decoded String:")
+    print(result)
 # Output:
 # Decoded String:
 # abbcccdddd
@@ -77,3 +96,4 @@ st = "abbcccdddd"
 x = into_minheap(frequency_table(st))
 for i in x:
     print(i)
+    
