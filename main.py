@@ -12,13 +12,17 @@ def into_minheap(dict):
     return heap
 
 '''Matthew'''
-# Pops top element from a minheap then sorts it
+# Pops top element from a minheap, then sorts it
 def pop_minheap(heap):
     if (len(heap) == 0):
         return
+    if (len(heap) == 1):
+        return heap.pop()
     popped = heap[0]
+
     heap[0] = heap.pop()
     i = 0
+    # Sorting starts
     while True:
         s = i
         if ((i * 2 + 1) < len(heap) and heap[i * 2 + 1][1] < heap[s][1]):
@@ -30,6 +34,7 @@ def pop_minheap(heap):
             i = s
         else:
             break
+        
     return popped
 
 '''Matthew'''
@@ -112,7 +117,8 @@ def Huffman_decode(bst, tree):
 st = "This is a test. This is only a test."
 #bst = "0000010010010101011111"
 
-y = frequency_table(st)
-print(y)
-x = into_minheap(y)
+x = into_minheap(frequency_table(st))
+
 print(x)
+for i in range(len(x)):
+    print(pop_minheap(x))
