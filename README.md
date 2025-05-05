@@ -1,4 +1,5 @@
 # CS435-HW6
+# Assignment Details
 Homework assignment 6 for CS435
 
 You are given a text of at most 256 characters. Implement the following functions as part of this assignment:
@@ -27,3 +28,11 @@ e) **`Huffman_decode(bst,tree)`**
 Using the Huffman tree built in part (d), write a function `Huffman_decode(bst,tree)` to decode the binary-encoded text `bst` back into its original string.
 Input: A binary-encoded string `bst` and its Huffman tree `tree`.
 Output: Print the decoded string.
+
+# Run Program
+Example uses the following inputs:
+`st = "abbcccdddd"`
+`L = [('a', '000'), ('b', '001'), ('c', '01'), ('d', '1')]`
+`bst = "0000010010101011111"`
+
+To run, simply run in IDE.
