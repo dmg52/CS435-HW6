@@ -55,17 +55,19 @@ def sort_minheap(heap):
             break
 
 '''Dennis'''
-# Create Huffman Codes for heap
-def heap_codes(heap, prefix = "", codes = None):
+# Create Huffman Codes for heap and returns final coded tree
+# Code prefix sent to child
+def heap_codes(heap, code_prefix = "", codes = None):
     if codes is None:
         codes = {}
 
     if not isinstance(heap, tuple):
-        codes[heap] = prefix
+        codes[heap] = code_prefix
     else:
+        # Recursively create binary codes for edges between left and right trees/heaps
         left, right = heap
-        heap_codes(left,  prefix + "1", codes)
-        heap_codes(right, prefix + "0", codes)
+        heap_codes(left,  code_prefix + "1", codes)
+        heap_codes(right, code_prefix + "0", codes)
 
     return codes
 
@@ -109,9 +111,11 @@ def Huffman_code(st):
     flip = len(heap) - 2
 
     while len(heap) > 1:
+        # Left tree is first pop from minheap and right tree is second pop from minheap
         left_tree, left_freq = pop_minheap(heap)
         right_tree, right_freq = pop_minheap(heap)
 
+        # Handle first merge being in reverse
         if len(heap) == flip:
             merged_tree = (right_tree, left_tree)
         else:
@@ -128,6 +132,9 @@ def Huffman_code(st):
     for ch in sorted(codes):
         print(f"'{ch}': {codes[ch]}")
 
+    # Convert dictionary of codes to list of tuples
+    codes = list(codes.items())
+
     return codes
 
 '''Dennis'''
@@ -138,12 +145,9 @@ def Huffman_code(st):
 # 0000010010010101011111
 def Huffman_encode(st, codes):
     st = st.lower()
-    code_list = []
+    code_dict = dict(codes)
 
-    for ch in st:
-        code_list.append(codes[ch])
-
-    bst = "".join(code_list)
+    bst = "".join(code_dict[ch] for ch in st)
     print("\nEncoded String:\n" + bst)
 
     return bst
@@ -199,6 +203,6 @@ codes = Huffman_code(st)
 # c)
 Huffman_encode(st, codes)
 # d)
-tree = Huffman_tree(L)
+tree = Huffman_tree(codes)
 # e)
 Huffman_decode(bst, tree)
