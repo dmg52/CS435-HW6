@@ -37,6 +37,36 @@ def pop_minheap(heap):
         
     return popped
 
+'''Dennis'''
+# Insert into heap with (char, freq) node
+def insert_minheap(heap, node):
+    heap.append(node)
+
+    # Sorting in minheap
+    i = len(heap) - 1
+    while i > 0:
+        parent = (i - 1) // 2
+        # sorting in heap
+        if heap[i][1] < heap[parent][1]:
+            heap[i], heap[parent] = heap[parent], heap[i]
+            i = parent
+        else:
+            break
+
+'''Dennis'''
+# Create Huffman Codes for heap
+def heap_codes(heap, prefix = "", codes = None):
+    if codes is None:
+        codes = {}
+
+    if not isinstance(heap, tuple):
+        codes[heap] = prefix or "0"
+    else:
+        left, right = heap
+        heap_codes(left,  prefix + "0", codes)
+        heap_codes(right, prefix + "1", codes)
+    return codes
+
 '''Matthew'''
 # a) frequency_table(st)
 # Input:
@@ -47,8 +77,10 @@ def frequency_table(st):
             table[i] = 1
         else:
             table[i] += 1
-    for i in table.items():
-        print(i[0] + ": " + str(i[1]))
+
+    print("Character Frequencies:")
+    for i in sorted(table.items()):
+        print(f"'{i[0]}' : {str(i[1])}")
     return table
 # Output:
 # Character Frequencies:
@@ -57,11 +89,31 @@ def frequency_table(st):
 # 'c': 3
 # 'd': 4
 
-'''DENNIS'''
+'''Dennis'''
 # b) Huffman_code(st)
 # Input:
 def Huffman_code(st):
-    return
+    st = st.lower()
+    freq_table = frequency_table(st)
+    heap = into_minheap(freq_table)
+
+    while len(heap) > 1:
+        left_char, left_freq = pop_minheap(heap)
+        right_char, right_freq = pop_minheap(heap)
+
+        merged_char = (left_char, right_char)
+        merged_freq = left_freq + right_freq
+
+        insert_minheap(heap, (merged_char, merged_freq))
+
+    root_tree, _ = heap[0]
+    codes = heap_codes(root_tree)
+
+    print("\nHuffman Codes:")
+    for ch in sorted(codes):
+        print(f"'{ch}': {codes[ch]}")
+
+    return codes
 # Output:
 # Huffman Codes:
 # 'a': 000
@@ -69,7 +121,7 @@ def Huffman_code(st):
 # 'c': 01
 # 'd': 1
 
-'''DENNIS'''
+'''Dennis'''
 # c) Huffman_encode(st)
 # Input:
 def Huffman_encode(st, codes):
@@ -112,13 +164,21 @@ def Huffman_decode(bst, tree):
 # Decoded String:
 # abbcccdddd
 
-#Given examples:
-#L = [('a', '000'), ('b', '001'), ('c', '01'), ('d', '1')]
-st = "This is a test. This is only a test."
-#bst = "0000010010010101011111"
+# Given examples:
+L = [('a', '000'), ('b', '001'), ('c', '01'), ('d', '1')]
+st1 = "This is a test. This is only a test."
+bst = "0000010010010101011111"
+
+'''
+# a)
 
 x = into_minheap(frequency_table(st))
 
 print(x)
 for i in range(len(x)):
     print(pop_minheap(x))
+'''
+
+# b)
+
+codes = Huffman_code(st1)
