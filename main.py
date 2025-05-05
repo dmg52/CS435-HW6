@@ -1,14 +1,14 @@
+# Dennis Gannon dmg52, Yonghyeon Shin ys97, Matthew Tohon mdt26
+# CS 435 - Homework 6
+
 '''Matthew'''
 # MinHeap constructor function, takes a dictionary of letters and their frequencies
 def into_minheap(dict):
     heap = []
     for i in dict.items():
         heap.append(i)
-        # index of new element
-        i = len(heap) - 1
-        while i > 0 and heap[(i - 1) // 2][1] > heap[i][1]:
-            heap[i], heap[(i - 1) // 2] = heap[(i - 1) // 2], heap[i]
-            i = (i - 1) // 2
+        sort_minheap(heap)
+
     return heap
 
 '''Matthew'''
@@ -41,12 +41,13 @@ def pop_minheap(heap):
 # Insert into heap with (char, freq) node
 def insert_minheap(heap, node):
     heap.append(node)
+    sort_minheap(heap)
 
-    # Sorting in minheap
+'''Dennis'''
+def sort_minheap(heap):
     i = len(heap) - 1
     while i > 0:
         parent = (i - 1) // 2
-        # sorting in heap
         if heap[i][1] < heap[parent][1]:
             heap[i], heap[parent] = heap[parent], heap[i]
             i = parent
@@ -60,16 +61,25 @@ def heap_codes(heap, prefix = "", codes = None):
         codes = {}
 
     if not isinstance(heap, tuple):
-        codes[heap] = prefix or "0"
+        codes[heap] = prefix
     else:
         left, right = heap
-        heap_codes(left,  prefix + "0", codes)
-        heap_codes(right, prefix + "1", codes)
+        heap_codes(left,  prefix + "1", codes)
+        heap_codes(right, prefix + "0", codes)
+
     return codes
 
+#################################################################################
+
 '''Matthew'''
-# a) frequency_table(st)
-# Input:
+# a)
+# Input: frequency_table(st)
+# Output:
+# Character Frequencies:
+# 'a': 1
+# 'b': 2
+# 'c': 3
+# 'd': 4
 def frequency_table(st):
     table = {}
     for i in st:
@@ -80,59 +90,69 @@ def frequency_table(st):
 
     print("Character Frequencies:")
     for i in sorted(table.items()):
-        print(f"'{i[0]}' : {str(i[1])}")
+        print(f"'{i[0]}': {str(i[1])}")
     return table
-# Output:
-# Character Frequencies:
-# 'a': 1
-# 'b': 2
-# 'c': 3
-# 'd': 4
 
 '''Dennis'''
-# b) Huffman_code(st)
-# Input:
-def Huffman_code(st):
-    st = st.lower()
-    freq_table = frequency_table(st)
-    heap = into_minheap(freq_table)
-
-    while len(heap) > 1:
-        left_char, left_freq = pop_minheap(heap)
-        right_char, right_freq = pop_minheap(heap)
-
-        merged_char = (left_char, right_char)
-        merged_freq = left_freq + right_freq
-
-        insert_minheap(heap, (merged_char, merged_freq))
-
-    root_tree, _ = heap[0]
-    codes = heap_codes(root_tree)
-
-    print("\nHuffman Codes:")
-    for ch in sorted(codes):
-        print(f"'{ch}': {codes[ch]}")
-
-    return codes
+# b)
+# Input: Huffman_code(st)
 # Output:
 # Huffman Codes:
 # 'a': 000
 # 'b': 001
 # 'c': 01
 # 'd': 1
+def Huffman_code(st):
+    st = st.lower()
+    freq_table = frequency_table(st)
+    heap = into_minheap(freq_table)
+    flip = len(heap) - 2
+
+    while len(heap) > 1:
+        left_tree, left_freq = pop_minheap(heap)
+        right_tree, right_freq = pop_minheap(heap)
+
+        if len(heap) == flip:
+            merged_tree = (right_tree, left_tree)
+        else:
+            merged_tree = (left_tree, right_tree)
+        merged_freq = left_freq + right_freq
+
+        insert_minheap(heap, (merged_tree, merged_freq))
+
+    tree = heap[0][0]
+    codes = heap_codes(tree)
+
+    #print(tree)
+    print("\nHuffman Codes:")
+    for ch in sorted(codes):
+        print(f"'{ch}': {codes[ch]}")
+
+    return codes
 
 '''Dennis'''
-# c) Huffman_encode(st)
-# Input:
-def Huffman_encode(st, codes):
-    return
+# c)
+# Input: Huffman_encode(st, codes)
 # Output:
 # Encoded String:
 # 0000010010010101011111
+def Huffman_encode(st, codes):
+    st = st.lower()
+    code_list = []
+
+    for ch in st:
+        code_list.append(codes[ch])
+
+    bst = "".join(code_list)
+    print("\nEncoded String:\n" + bst)
+
+    return bst
 
 '''Yonghyeon'''
-# d) Huffman_tree(L)
-# Input:
+# d)
+# Input: Huffman_tree(L)
+# Output:
+# (Huffman tree structure is constructed and stored in variable `tree`)
 def Huffman_tree(L):
     root = {}
     for char, code in L:
@@ -144,12 +164,12 @@ def Huffman_tree(L):
         node['char'] = char 
     return root
 
-# Output:
-# (Huffman tree structure is constructed and stored in variable `tree`)
-
 '''Yonghyeon'''
-# e) Huffman_decode(bst, tree)
-# Input:
+# e)
+# Input: Huffman_decode(bst, tree)
+# Output:
+# Decoded String:
+# abbcccdddd
 def Huffman_decode(bst, tree):
     result = ''
     node = tree
@@ -158,27 +178,27 @@ def Huffman_decode(bst, tree):
         if 'char' in node:
             result += node['char']
             node = tree  # 다시 루트로 리셋
-    print("Decoded String:")
+    print("\nDecoded String:")
     print(result)
-# Output:
-# Decoded String:
-# abbcccdddd
 
+#################################################################################
 # Given examples:
+
+st = "abbcccdddd"
 L = [('a', '000'), ('b', '001'), ('c', '01'), ('d', '1')]
-st1 = "This is a test. This is only a test."
-bst = "0000010010010101011111"
+bst = "0000010010101011111"
 
-'''
-# a)
+st2 = "This is a test for the created functions."
 
-x = into_minheap(frequency_table(st))
+# Output
 
-print(x)
-for i in range(len(x)):
-    print(pop_minheap(x))
-'''
-
-# b)
-
-codes = Huffman_code(st1)
+print("Input String:\n" + st + "\n")
+# a) & b)
+# b) Huffman_code(st) calls a) frequency_table(st)
+codes = Huffman_code(st)
+# c)
+Huffman_encode(st, codes)
+# d)
+tree = Huffman_tree(L)
+# e)
+Huffman_decode(bst, tree)
