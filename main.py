@@ -189,8 +189,6 @@ def Huffman_decode(bst, tree):
 # Given examples:
 
 st = "abbcccdddd"
-L = [('a', '000'), ('b', '001'), ('c', '01'), ('d', '1')]
-bst = "0000010010101011111"
 
 st2 = "This is a test for the created functions."
 
@@ -199,10 +197,12 @@ st2 = "This is a test for the created functions."
 print("Input String:\n" + st + "\n")
 # a) & b)
 # b) Huffman_code(st) calls a) frequency_table(st)
-codes = Huffman_code(st)
+L = codes = Huffman_code(st)
 # c)
-Huffman_encode(st, codes)
+bst = Huffman_encode(st, codes)
 # d)
-tree = Huffman_tree(codes)
+# L = [('a', '000'), ('b', '001'), ('c', '01'), ('d', '1')]
+tree = Huffman_tree(L)
 # e)
+# bst = "0000010010101011111"
 Huffman_decode(bst, tree)
